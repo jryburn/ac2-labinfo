@@ -31,3 +31,4 @@ ip link set bond0 up
 ip link add link bond0 name bond0.34 type vlan id 34
 ip link set bond0.34 up
 ip addr add 10.34.34.34/24 dev bond0.34
+ip route add 10.78.78.0/24 via 10.34.34.1
