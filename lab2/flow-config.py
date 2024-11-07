@@ -3,8 +3,8 @@ from pygnmi.client import gNMIclient
 import requests
 
 # Kentik email, token, and API base URL
-KENTIK_API_EMAIL = "justin@ryburn.org" # Replace with your Kentik account email
-KENTIK_API_TOKEN = "fdd6e813e675f3e3431d616a7039e1e9" # Replace with your Kentik API token
+KENTIK_API_EMAIL = "user@domain.com" # Replace with your Kentik account email
+KENTIK_API_TOKEN = "mylongtoken" # Replace with your Kentik API token
 KENTIK_API_BASE_URL = "https://api.kentik.com/api/v202308beta1/device/batch"
 
 # Arista device username and password
