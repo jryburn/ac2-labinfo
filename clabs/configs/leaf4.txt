@@ -16,6 +16,7 @@ spanning-tree mode mstp
 no spanning-tree vlan-id 4090
 !
 vlan 34
+   name test-l3-vxlan
 !
 vlan 4090
    name mlag-peer
@@ -32,6 +33,12 @@ management api gnmi
 management api netconf
    transport ssh default
 !
+interface Port-Channel111
+   description Host2
+   switchport mode trunk
+   mlag 111
+   spanning-tree link-type point-to-point
+!
 interface Port-Channel999
    description MLAG Peer
    switchport mode trunk
@@ -39,8 +46,12 @@ interface Port-Channel999
    spanning-tree link-type point-to-point
 !
 interface Ethernet7
+   description Host2
+   channel-group 111 mode active
 !
 interface Ethernet8
+   description Host2
+   channel-group 111 mode active
 !
 interface Ethernet9
    description mlag peer link
