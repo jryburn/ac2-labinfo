@@ -39,16 +39,24 @@ topology:
       startup-config: configs/spine2.txt
     host1:
       kind: linux
-      cmd: configs/host1.sh
+      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      binds:
+        - configs/host1.txt:/etc/netplan/01-netcfg.yaml
     host2:
       kind: linux
-      cmd: configs/host2.sh
+      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      binds:
+        - configs/host2.txt:/etc/netplan/01-netcfg.yaml
     host3:
       kind: linux
-      cmd: configs/host3.sh
+      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      binds:
+        - configs/host3.txt:/etc/netplan/01-netcfg.yaml
     host4:
       kind: linux
-      cmd: configs/host4.sh
+      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      binds:
+        - configs/host4.txt:/etc/netplan/01-netcfg.yaml
   links:
     - endpoints: ["leaf1:eth7", "host1:eth1"]
     - endpoints: ["leaf1:eth8", "host1:eth2"]
