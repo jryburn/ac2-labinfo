@@ -1,106 +1,135 @@
-import pyeapi
+import json
+from pygnmi.client import gNMIclient
 import requests
 
-# Kentik API token and base URL
-KENTIK_API_TOKEN = "YOUR_KENTIK_API_TOKEN"
-KENTIK_API_BASE_URL = "https://api.kentik.com/api/v202308beta1/device"
+# Kentik email, token, and API base URL
+KENTIK_API_EMAIL = "justin@ryburn.org"
+KENTIK_API_TOKEN = "fdd6e813e675f3e3431d616a7039e1e9"
+KENTIK_API_BASE_URL = "https://api.kentik.com/api/v202308beta1/device/batch"
+
+# Arista device username and password
+ARISTA_USERNAME = "admin"
+ARISTA_PASSWORD = "admin"
+
 
 # List of devices to configure
 devices = [
     {
-        "ip": "SWITCH_IP_1",
-        "username": "USERNAME_1",
-        "password": "PASSWORD_1",
-        "kentik_device_name": "Arista Switch 1",
-        "sending_ip": "10.10.10.1",  # sFlow sending IP
+        "ip": "172.20.20.5",
+        "port": 57400,
+        "username": ARISTA_USERNAME,
+
+        "kentik_device_name": "leaf1",
     },
     {
-        "ip": "SWITCH_IP_2",
-        "username": "USERNAME_2",
-        "password": "PASSWORD_2",
-        "kentik_device_name": "Arista Switch 2",
-        "sending_ip": "10.10.10.2",  # sFlow sending IP
+        "ip": "172.20.20.9",
+        "kentik_device_name": "leaf2",
+    },
+    {
+        "ip": "172.20.20.15",
+        "kentik_device_name": "leaf3",
+    },
+    {
+        "ip": "172.20.20.12",
+        "kentik_device_name": "leaf4",
+    },
+    {
+        "ip": "172.20.20.8",
+        "kentik_device_name": "leaf5",
+    },
+    {
+        "ip": "172.20.20.4",
+        "kentik_device_name": "leaf6",
+    },
+    {
+        "ip": "172.20.20.2",
+        "kentik_device_name": "leaf7",
+    },
+    {
+        "ip": "172.20.20.13",
+        "kentik_device_name": "leaf8",
+    },
+    {
+        "ip": "172.20.20.6",
+        "kentik_device_name": "spine1",
+    },
+    {
+        "ip": "172.20.20.7",
+        "kentik_device_name": "spine2",
     },
     # Add more devices as needed
 ]
 
-# Function to configure sFlow on the Arista switch using PYEAPI
-def configure_sflow_on_switch(ip, username, password, sending_ip):
-    try:
-        # Connect to the Arista switch
-        node = pyeapi.connect(
-            transport="https",
-            host=ip,
-            username=username,
-            password=password,
-            return_node=True,
-            port=443
-        )
+# Function to create a batch payload for Kentik device update
+### TODO: add the autocon tag to the devices ###
+### Also add sites so it shows up on teh map ###
+def prepare_kentik_batch_payload(devices):
+    batch_payload = []
+    for device in devices:
+        device_config = {
+            "device_name": device["kentik_device_name"],
+            "device_type": "router",
+            "sending_ips": [device["sending_ip"]],
+            "plan_id": 12345,  # Replace with your Kentik plan ID
+            "device_sample_rate": 512,
+            "description": f"{device['kentik_device_name']} configured for sFlow",
+        }
+        batch_payload.append(device_config)
+    return {"devices": batch_payload}
 
-        # sFlow configuration commands
-        sflow_commands = [
-            'enable',
-            'configure terminal',
-            'sflow',
-            f'sflow collector 10.10.10.10',  # Replace with your sFlow collector IP
-            f'sflow agent ip {sending_ip}',
-            'sflow sample 512',
-            'sflow polling-interval 30',
-        ]
-
-        # Execute the commands on the Arista switch
-        node.config(sflow_commands)
-        print(f"sFlow configuration applied to switch {ip}.")
-    except Exception as e:
-        print(f"Failed to configure sFlow on the switch {ip}: {e}")
-
-# Function to configure the device in Kentik
-def configure_device_in_kentik(kentik_device_name, sending_ip):
+# Function to send batch update to Kentik
+def configure_devices_in_kentik_batch(devices):
     headers = {
-        'Authorization': f"Bearer {KENTIK_API_TOKEN}",
+        'X-CH-Auth-API-Token': f"Bearer {KENTIK_API_EMAIL}",
+        'X-CH-Auth-Email': f"Bearer {KENTIK_API_TOKEN}",
         'Content-Type': 'application/json',
     }
 
-    # Kentik device payload for configuration
-    payload = {
-        "device": {
-            "device_name": kentik_device_name,
-            "device_type": "router",
-            "sending_ips": [sending_ip],
-            "plan_id": 12345,  # Replace with your Kentik plan ID
-            "device_sample_rate": 512,
-            "description": f"{kentik_device_name} configured for sFlow",
+    # Prepare the payload for batch update
+    payload = prepare_kentik_batch_payload(devices)
+
+    # Send batch update request to Kentik
+    try:
+        response = requests.put(
+            KENTIK_API_BATCH_URL, headers=headers, json=payload
+        )
+        response.raise_for_status()
+        print("Devices configured in Kentik:", response.json())
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to configure devices in Kentik: {e}")
+
+# Function to configure sFlow on the Arista switch using gNMI and OpenConfig
+def configure_sflow_on_switch(device):
+    sflow_config = {
+        "sflow": {
+            "config": {
+                "agent-id": device["sending_ip"],         # Agent IP for sFlow
+                "collector-address": "10.10.10.10",       # Replace with your collector IP
+                "sample-rate": 512,
+                "polling-interval": 30
+            }
         }
     }
 
-    # Send request to Kentik API to add the device
+    # Establish gNMI connection to the device
+    target = (device["ip"], device["port"])
     try:
-        response = requests.post(
-            KENTIK_API_BASE_URL, headers=headers, json=payload
-        )
-        response.raise_for_status()
-        print(f"Device {kentik_device_name} configured in Kentik:", response.json())
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to configure device {kentik_device_name} in Kentik: {e}")
+        with gNMIclient(target=target, username=device["username"], password=device["password"], insecure=True) as gnmi:
+            # Update sFlow configuration
+            result = gnmi.set(update=[(SFLOW_PATH, sflow_config)])
+            print(f"sFlow configuration applied to switch {device['ip']}:", result)
+    except Exception as e:
+        print(f"Failed to configure sFlow on the switch {device['ip']}: {e}")
 
-# Main function to loop through each device and configure sFlow and Kentik
+# Main function to loop through each device, configure sFlow, and then send batch update to Kentik
 def main():
+    # Step 1: Configure all devices in Kentik in a single batch update
+    configure_devices_in_kentik_batch(devices)
+
+    # Step 2: Configure sFlow on each switch
     for device in devices:
         print(f"Configuring device: {device['kentik_device_name']} ({device['ip']})")
-
-        # Step 1: Configure sFlow on the switch
-        configure_sflow_on_switch(
-            device["ip"],
-            device["username"],
-            device["password"],
-            device["sending_ip"]
-        )
-        
-        # Step 2: Configure device in Kentik
-        configure_device_in_kentik(
-            device["kentik_device_name"],
-            device["sending_ip"]
-        )
+        configure_sflow_on_switch(device)    
 
 if __name__ == "__main__":
     main()
