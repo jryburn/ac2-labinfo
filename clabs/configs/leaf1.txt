@@ -81,9 +81,6 @@ interface Management0
    ip address 172.20.20.6/24
    ipv6 address 2001:172:20:20::6/64
 !
-interface Vlan40
-   ip address 192.168.215.10/24
-!
 interface Vlan4090
    no autostate
    ip address 10.0.199.254/31
