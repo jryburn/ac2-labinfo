@@ -39,12 +39,16 @@ topology:
       startup-config: configs/spine2.txt
     host1:
       kind: linux
+      cmd: host1.sh
     host2:
       kind: linux
+      cmd: host2.sh
     host3:
       kind: linux
+      cmd: host3.sh
     host4:
       kind: linux
+      cmd: host4.sh
   links:
     - endpoints: ["leaf1:eth7", "host1:eth1"]
     - endpoints: ["leaf1:eth8", "host1:eth2"]
