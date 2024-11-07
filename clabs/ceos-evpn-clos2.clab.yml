@@ -53,27 +53,27 @@ topology:
       mgmt-ipv4: 172.20.20.22
     host1:
       kind: linux
-      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
-      binds:
-        - configs/host1.txt:/etc/netplan/01-netcfg.yaml
+      # cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      # binds:
+      #   - configs/host1.txt:/etc/netplan/01-netcfg.yaml
       mgmt-ipv4: 172.20.20.31
     host2:
       kind: linux
-      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
-      binds:
-        - configs/host2.txt:/etc/netplan/01-netcfg.yaml
+      # cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      # binds:
+      #   - configs/host2.txt:/etc/netplan/01-netcfg.yaml
       mgmt-ipv4: 172.20.20.32
     host3:
       kind: linux
-      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
-      binds:
-        - configs/host3.txt:/etc/netplan/01-netcfg.yaml
+      # cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      # binds:
+      #   - configs/host3.txt:/etc/netplan/01-netcfg.yaml
       mgmt-ipv4: 172.20.20.33
     host4:
       kind: linux
-      cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
-      binds:
-        - configs/host4.txt:/etc/netplan/01-netcfg.yaml
+      # cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
+      # binds:
+      #   - configs/host4.txt:/etc/netplan/01-netcfg.yaml
       mgmt-ipv4: 172.20.20.34
   links:
     - endpoints: ["leaf1:eth7", "host1:eth1"]
