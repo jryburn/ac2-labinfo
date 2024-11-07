@@ -3,8 +3,8 @@ from pygnmi.client import gNMIclient
 import requests
 
 # Kentik email, token, and API base URL
-KENTIK_API_EMAIL = "justin@ryburn.org"
-KENTIK_API_TOKEN = "fdd6e813e675f3e3431d616a7039e1e9"
+KENTIK_API_EMAIL = "justin@ryburn.org" # Replace with your Kentik account email
+KENTIK_API_TOKEN = "fdd6e813e675f3e3431d616a7039e1e9" # Replace with your Kentik API token
 KENTIK_API_BASE_URL = "https://api.kentik.com/api/v202308beta1/device/batch"
 
 # Arista device username and password
@@ -16,45 +16,72 @@ ARISTA_PASSWORD = "admin"
 devices = [
     {
         "ip": "172.20.20.5",
-        "port": 57400,
+        "port": 57400, # Default gNMI port, adjust if needed
         "username": ARISTA_USERNAME,
-
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf1",
     },
     {
         "ip": "172.20.20.9",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf2",
     },
     {
         "ip": "172.20.20.15",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf3",
     },
     {
         "ip": "172.20.20.12",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf4",
     },
     {
         "ip": "172.20.20.8",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf5",
     },
     {
         "ip": "172.20.20.4",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf6",
     },
     {
         "ip": "172.20.20.2",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf7",
     },
     {
         "ip": "172.20.20.13",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "leaf8",
     },
     {
         "ip": "172.20.20.6",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "spine1",
     },
     {
         "ip": "172.20.20.7",
+        "port": 57400, # Default gNMI port, adjust if needed
+        "username": ARISTA_USERNAME,
+        "password": ARISTA_PASSWORD,
         "kentik_device_name": "spine2",
     },
     # Add more devices as needed
@@ -68,11 +95,10 @@ def prepare_kentik_batch_payload(devices):
     for device in devices:
         device_config = {
             "device_name": device["kentik_device_name"],
-            "device_type": "router",
-            "sending_ips": [device["sending_ip"]],
-            "plan_id": 12345,  # Replace with your Kentik plan ID
-            "device_sample_rate": 512,
-            "description": f"{device['kentik_device_name']} configured for sFlow",
+            "sending_ips": [device["ip"]],
+            "planId": 12345,  # Replace with your Kentik plan ID
+            "siteId": 12345, # Replace with your Site ID for Autocon2
+            "deviceSampleRate": 512,
         }
         batch_payload.append(device_config)
     return {"devices": batch_payload}
@@ -103,8 +129,8 @@ def configure_sflow_on_switch(device):
     sflow_config = {
         "sflow": {
             "config": {
-                "agent-id": device["sending_ip"],         # Agent IP for sFlow
-                "collector-address": "10.10.10.10",       # Replace with your collector IP
+                "agent-id": device["ip"],
+                "collector-address": "172.20.20.1",
                 "sample-rate": 512,
                 "polling-interval": 30
             }

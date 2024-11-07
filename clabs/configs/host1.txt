@@ -23,36 +23,11 @@ network:
       parameters:
         mode: 802.3ad
         mii-monitor-interval: 100
-    bond1:
-      mtu: 9000
-      dhcp4: false
-      dhcp6: false
-      interfaces:
-        - eth3
-        - eth4
-      parameters:
-        mode: 802.3ad
-        mii-monitor-interval: 100
     vlans:
-        bond0.78:
-          id: 78
+        bond0.40:
+          id: 40
           link: bond0
-          addresses : [10.0.78.1/24]
+          addresses : [10.40.40.10/24]
           nameservers:
-          mtu: 9000
-        bond0.4090:
-          id: 4090
-          link: bond0
-          addresses: [10.0.40.91/24]
-          mtu: 9000
-        bond1.78:
-          id: 78
-          link: bond1
-          addresses: [10.1.78.1/24]
-          mtu: 9000
-        bond1.4090:
-          id: 4090
-          link: bond1
-          addresses : [10.1.40.91/24]
           mtu: 9000
   version: 2
