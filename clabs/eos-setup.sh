@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CFG_DIR=./configs
+CFG_DIR=./eos-configs
 
 configure_HOST() {
   docker cp $CFG_DIR/$1.sh clab-ceos-evpn-clos2-$1:/tmp/
