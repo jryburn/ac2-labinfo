@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CFG_DIR=./srl-configs
+CFG_DIR=./configs
 
 configure_HOST() {
   docker cp $CFG_DIR/$1.sh clab-srl-evpn-clos2-$1:/tmp/
