@@ -13,27 +13,27 @@ topology:
   nodes:
     leaf1:
       kind: ceos
-      startup-config: configs/leaf1.txt
+      startup-config: eos-configs/leaf1.txt
       mgmt-ipv4: 172.20.20.11
     leaf2:
       kind: ceos
-      startup-config: configs/leaf2.txt
+      startup-config: eos-configs/leaf2.txt
       mgmt-ipv4: 172.20.20.12
     leaf3:
       kind: ceos
-      startup-config: configs/leaf3.txt
+      startup-config: eos-configs/leaf3.txt
       mgmt-ipv4: 172.20.20.13
     leaf4:
       kind: ceos
-      startup-config: configs/leaf4.txt
+      startup-config: eos-configs/leaf4.txt
       mgmt-ipv4: 172.20.20.14
     leaf5:
       kind: ceos
-      startup-config: configs/leaf5.txt
+      startup-config: eos-configs/leaf5.txt
       mgmt-ipv4: 172.20.20.15
     leaf6:
       kind: ceos
-      startup-config: configs/leaf6.txt
+      startup-config: eos-configs/leaf6.txt
       mgmt-ipv4: 172.20.20.16
     leaf7:
       group: leaf
@@ -42,34 +42,27 @@ topology:
       mgmt-ipv4: 172.20.20.17
     leaf8:
       kind: ceos
-      startup-config: configs/leaf8.txt
+      startup-config: eos-configs/leaf8.txt
       mgmt-ipv4: 172.20.20.18
     spine1:
       kind: ceos
-      startup-config: configs/spine1.txt
+      startup-config: eos-configs/spine1.txt
       mgmt-ipv4: 172.20.20.21
     spine2:
       kind: ceos
-      startup-config: configs/spine2.txt
+      startup-config: eos-configs/spine2.txt
       mgmt-ipv4: 172.20.20.22
     host1:
       kind: linux
-      group: server
-      # cmd: "bash -c apt update && apt install -y vlan iproute2 vim nano net-tools iputils-ping tcpdump netplan.io"
-      # binds:
-      #   - configs/host1.txt:/etc/netplan/01-netcfg.yaml
       mgmt-ipv4: 172.20.20.31
     host2:
       kind: linux
-      cmd: "bash -c apt update && apt install -y vlan iproute2 net-tools iputils-ping tcpdump"
       mgmt-ipv4: 172.20.20.32
     host3:
       kind: linux
-      cmd: "bash -c apt update && apt install -y vlan iproute2 net-tools iputils-ping tcpdump"
       mgmt-ipv4: 172.20.20.33
     host4:
       kind: linux
-      cmd: "bash -c apt update && apt install -y vlan iproute2 net-tools iputils-ping tcpdump"
       mgmt-ipv4: 172.20.20.34
   links:
     - endpoints: ["leaf1:eth7", "host1:eth1"]
