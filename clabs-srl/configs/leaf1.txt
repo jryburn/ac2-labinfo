@@ -1,3 +1,40 @@
+interface ethernet-1/7 {
+    description Host1
+    admin-state enable
+}
+interface ethernet-1/8 {
+    description Host1
+    admin-state enable
+}
+interface ethernet-1/9 {
+    description "mlag peer link"
+    admin-state enable
+}
+interface ethernet-1/10 {
+    description "mlag peer link"
+    admin-state enable
+}
+interface ethernet-1/11 {
+    description spine1
+    admin-state enable
+    mtu 9214
+    subinterface 0 {
+        ipv4 {
+            address 10.0.1.1/31 {
+            }
+        }
+    }
+}
+interface ethernet-1/12 {
+    description spine2
+    admin-state enable
+    subinterface 0 {
+        ipv4 {
+            address 10.0.2.1/31 {
+            }
+        }
+    }
+}
 network-instance default {
     interface ethernet-1/7.0 {
     }
@@ -18,19 +55,19 @@ network-instance default {
             router-id 10.0.250.11
             group evpn {
                 peer-as 65000
-                ipv4-unicast {
+                afi-safi ipv4-unicast {
                     admin-state enable
                 }
             }
             group underlay {
                 peer-as 65000
-                ipv4-unicast {
+                afi-safi ipv4-unicast {
                     admin-state enable
                 }
             }
             group underlay_ibgp {
                 peer-as 65001
-                ipv4-unicast {
+                afi-safi ipv4-unicast {
                     admin-state enable
                 }
             }
