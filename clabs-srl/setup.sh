@@ -22,7 +22,7 @@ configure_CLIENT() {
 echo
 PIDS=""
 NE=("leaf1" "leaf2" "leaf3" "leaf4" "leaf5" "leaf6" "leaf7" "leaf8" "spine1" "spine2")
-CLIENT=("host1" "host2" "hostt3" "host4")
+CLIENT=("host1" "host2" "host3" "host4")
 
 for VARIANT in ${NE[@]}; do
   ( configure_SRL $VARIANT ) &

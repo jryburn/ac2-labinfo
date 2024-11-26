@@ -1,4 +1,4 @@
-name: srl-evpn-clos2
+name: clos2
 
 mgmt:
   network: br-clos02
