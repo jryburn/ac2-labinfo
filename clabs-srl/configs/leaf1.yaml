@@ -1,0 +1,90 @@
+srl_nokia-interfaces:interface:
+  - name: ethernet-1/7
+    admin-state: enable
+    description: Host1
+  - name: ethernet-1/8
+    admin-state: enable
+    description: Host1
+  - name: ethernet-1/9
+    admin-state: enable
+    description: mlag peer link
+  - name: ethernet-1/10
+    admin-state: enable
+    description: mlag peer link
+  - name: ethernet-1/11
+    admin-state: enable
+    description: spine1
+    mtu: 9214
+    subinterface:
+      - index: 0
+        ipv4:
+          admin-state: enable
+          address:
+            - ip-prefix: 10.0.1.1/31
+  - name: ethernet-1/12
+    admin-state: enable
+    description: spine2
+    mtu: 9214
+    subinterface:
+      - index: 0
+        ipv4:
+          admin-state: enable
+          address:
+            - ip-prefix: 10.0.2.1/31
+  - name: loopback0
+    admin-state: enable
+    subinterface:
+      - index: 0
+        ipv4:
+          admin-state: enable
+          address:
+            - ip-prefix: 10.0.250.11/32
+  - name: loopback2
+    admin-state: enable
+    subinterface:
+      - index: 0
+        ipv4:
+          admin-state: enable
+          address:
+            - ip-prefix: 10.0.255.11/32
+
+srl_nokia-network-instance:network-instance:
+  - name: default
+    admin-state: enable
+    interface:
+      - name: ethernet-1/7.0
+      - name: ethernet-1/8.0
+      - name: ethernet-1/9.0
+      - name: ethernet-1/10.0
+      - name: ethernet-1/11.0
+      - name: ethernet-1/12.0
+      - name: loopback0
+      - name: loopback1
+    protocols:
+      srl_nokia-bgp:bgp:
+        autonomous-system: 65001
+        router-id: 10.0.250.11
+        afi-safi:
+          - afi-safi-name: ipv4-unicast
+            admin-state: enable
+        group:
+          - group-name: evpn
+            peer-as: 65000
+            admin-state: enable
+          - group-name: underlay
+            peer-as: 65000
+            admin-state: enable
+          - group-name: underlay_ibgp
+            peer-as: 65001
+            admin-state: enable
+        neighbor:
+          - peer-address: 10.0.1.0
+            peer-group: underlay
+          - peer-address: 10.0.2.0
+            peer-group: underlay
+          - peer-address: 10.0.199.255
+            peer-group: underlay_ibgp
+          - peer-address: 10.0.250.1
+            peer-group: evpn
+          - peer-address: 10.0.250.2
+            peer-group: evpn

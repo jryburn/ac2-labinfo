@@ -258,6 +258,10 @@ function install-containerlab {
     fi
 }
 
+function install-gnmic {
+    echo bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
+}
+
 function all {
     # check OS to determine distro
     check_os
@@ -272,6 +276,7 @@ function all {
     add-ssh-socket-env-for-sudo
 
     install-containerlab
+    install-gnmic
 }
 
 "$@"
