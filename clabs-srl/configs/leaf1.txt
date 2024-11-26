@@ -1,0 +1,54 @@
+network-instance default {
+    interface ethernet-1/7.0 {
+    }
+    interface ethernet-1/8.0 {
+    }
+    interface ethernet-1/9.0 {
+    }
+    interface ethernet-1/10.0 {
+    }
+    interface ethernet-1/11.0 {
+    }
+    interface ethernet-1/12.0 {
+    }
+    protocols {
+        bgp {
+            admin-state enable
+            autonomous-system 65001
+            router-id 10.0.250.11
+            group evpn {
+                peer-as 65000
+                ipv4-unicast {
+                    admin-state enable
+                }
+            }
+            group underlay {
+                peer-as 65000
+                ipv4-unicast {
+                    admin-state enable
+                }
+            }
+            group underlay_ibgp {
+                peer-as 65001
+                ipv4-unicast {
+                    admin-state enable
+                }
+            }
+            neighbor 10.0.1.0 {
+                peer-group underlay
+            }
+            neighbor 10.0.2.0 {
+                peer-group underlay
+            }
+            neighbor 10.0.199.255 {
+                peer-group underlay_ibgp
+            }
+            neighbor 10.0.250.1 {
+                peer-group evpn
+            }
+            neighbor 10.0.250.2 {
+                peer-group evpn
+            }
+        }
+    }
+}
