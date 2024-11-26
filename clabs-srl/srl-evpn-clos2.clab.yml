@@ -14,43 +14,43 @@ topology:
   nodes:
     leaf1:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf1.txt
+      startup-config: configs/leaf1.txt
       mgmt-ipv4: 172.20.20.11
     leaf2:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf2.txt
+      startup-config: configs/leaf2.txt
       mgmt-ipv4: 172.20.20.12
     leaf3:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf3.txt
+      startup-config: configs/leaf3.txt
       mgmt-ipv4: 172.20.20.13
     leaf4:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf4.txt
+      startup-config: configs/leaf4.txt
       mgmt-ipv4: 172.20.20.14
     leaf5:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf5.txt
+      startup-config: configs/leaf5.txt
       mgmt-ipv4: 172.20.20.15
     leaf6:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf6.txt
+      startup-config: configs/leaf6.txt
       mgmt-ipv4: 172.20.20.16
     leaf7:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf7.txt
+      startup-config: configs/leaf7.txt
       mgmt-ipv4: 172.20.20.17
     leaf8:
       kind: nokia_srlinux
-      startup-config: srl-configs/leaf8.txt
+      startup-config: configs/leaf8.txt
       mgmt-ipv4: 172.20.20.18
     spine1:
       kind: nokia_srlinux
-      startup-config: srl-configs/spine1.txt
+      startup-config: configs/spine1.txt
       mgmt-ipv4: 172.20.20.21
     spine2:
       kind: nokia_srlinux
-      startup-config: srl-configs/spine2.txt
+      startup-config: configs/spine2.txt
       mgmt-ipv4: 172.20.20.22
     host1:
       kind: linux
