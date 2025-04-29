@@ -17,6 +17,9 @@ apt install -y net-tools
 # Install tcpdump
 apt install -y tcpdump
 
+# Install iperf3
+apt-get install --assume-yes iperf3
+
 # Creating a bonded Ethernet interface (bond0)
 ip link add bond0 type bond mode 802.3ad
 ip link set eth1 down
@@ -31,3 +34,7 @@ ip link set bond0 up
 ip link add link bond0 name bond0.40 type vlan id 40
 ip link set bond0.40 up
 ip addr add 10.40.40.30/24 dev bond0.40
+
+#Start iperf server and run the client to my peer
+iperf -s
+iperf -c 10.40.40.10
