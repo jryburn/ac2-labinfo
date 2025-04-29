@@ -20,6 +20,19 @@ ip link add link bond0 name bond0.40 type vlan id 40
 ip link set bond0.40 up
 ip addr add 10.40.40.30/24 dev bond0.40
 
-#Start iperf server and run the client to my peer
-# iperf3 -s &
-# iperf3 -c 10.40.40.10
+#Start iperf server
+cat <<- EOF >   /etc/systemd/system/iperf3.service
+[Unit]
+Description=iperf3 server
+
+[Service]
+ExecStart=/usr/bin/iperf3 -s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+service iperf3 start
+
+# Run the client to my peer
+iperf3 -c 10.40.40.10

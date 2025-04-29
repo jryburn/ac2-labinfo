@@ -21,6 +21,19 @@ ip link set bond0.34 up
 ip addr add 10.34.34.34/24 dev bond0.34
 ip route add 10.78.78.0/24 via 10.34.34.1
 
-#Start iperf server and run the client to my peer
-# iperf3 -s &
-# iperf3 -c 10.78.78.78
+#Start iperf server
+cat <<- EOF >   /etc/systemd/system/iperf3.service
+[Unit]
+Description=iperf3 server
+
+[Service]
+ExecStart=/usr/bin/iperf3 -s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+service iperf3 start
+
+# Run the client to my peer
+iperf3 -c 10.78.78.78
